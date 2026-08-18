@@ -14,45 +14,31 @@ type AuthUserWithRoles = {
                     id: number;
                     code: string;
                     name: string;
-                    description: string;
+                    description: string | null;
                 };
             }>;
         };
     }>;
 };
 
-export function mapAuthenticatedUser(
-    user: AuthUserWithRoles
-) {
-    const permissionsMap = new Map<number, {
-        id: number;
-        code: string;
-        name: string;
-        description: string;
-    }>();
-
-    for (const userRole of user.roles) {
-        for (const rolePermission of userRole.role.permissions) {
-            const permission = rolePermission.permission;
-
-            permissionsMap.set(permission.id, permission);
-        }
-    }
-
-    const roles = user.roles.map((userRole) => ({
-        id: userRole.role.id,
-        name: userRole.role.name,
-        description: userRole.role.description,
-        permissions: userRole.role.permissions.map(
-            (rolePermission) => rolePermission.permission
+export function mapAuthenticatedUser(user: AuthUserWithRoles) {
+    const permissions = [
+        ...new Set(
+            user.roles.flatMap((userRole) =>
+                userRole.role.permissions.map(
+                    (rolePermission) => rolePermission.permission.code
+                )
+            )
         ),
-    }));
+    ];
 
     return {
         id: user.id,
         name: user.name,
         username: user.username,
-        roles,
-        permissions: Array.from(permissionsMap.values()),
+        roles: user.roles.map(
+            (userRole) => userRole.role.name
+        ),
+        permissions,
     };
 }

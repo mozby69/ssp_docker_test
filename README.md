@@ -16,8 +16,9 @@ It establishes consistent conventions for frontend architecture, backend archite
 - [Architecture Overview](#architecture-overview)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
-- [Development Command Reference](#development=command-reference)
-- [Development Command Reference](#development=command-reference)
+- [Development Command Reference](#development-command-reference)
+- [Boneyard Skeleton Generation](#boneyard-skeleton-generation)
+- [Modal Management](#modal-management)
 - [Monorepo Architecture](#monorepo-architecture)
 - [Frontend Architecture](#frontend-architecture)
 - [Backend Architecture](#backend-architecture)
@@ -730,6 +731,620 @@ pnpm --filter api dev
 ```
 
 ---
+
+## Boneyard Skeleton Generation
+
+Boneyard.js is used to generate skeleton/loading states for frontend pages.
+
+The following setup should be completed before generating skeletons.
+
+### 1. Install Boneyard.js
+
+Install Boneyard.js in the `web` workspace:
+
+```bash
+pnpm --filter web add boneyard-js
+```
+
+### 2. Install Playwright
+
+Install Playwright as a development dependency:
+
+```bash
+pnpm --filter web add -D playwright
+```
+
+Install the Chromium browser required by Playwright:
+
+```bash
+pnpm --filter web exec playwright install chromium
+```
+
+### 3. Add the Skeleton Component
+
+Add the `Skeleton` component to the page or view where a loading skeleton is required.
+
+Import the Boneyard `Skeleton` component and the generated skeleton registry:
+
+```tsx
+import { Skeleton } from "boneyard-js/react";
+
+import "@/bones/registry";
+```
+
+The registry import is required so Boneyard can resolve the generated skeletons by their registered names.
+
+Then wrap the page content with the `Skeleton` component:
+
+```tsx
+import { Skeleton } from "boneyard-js/react";
+
+import "@/bones/registry";
+
+export function AccessControlView() {
+    return (
+        <Skeleton
+            name="admin-access-control"
+            loading={showSkeleton}
+            fixture={
+                // fixture
+            }
+        >
+            {/* Page content */}
+        </Skeleton>
+    );
+}
+```
+
+The `name` should uniquely identify the page or feature:
+
+```tsx
+name="admin-access-control"
+```
+
+Use the appropriate loading state for the page:
+
+```tsx
+loading={showSkeleton}
+```
+
+or when using the loading state directly from a query:
+
+```tsx
+loading={isLoading}
+```
+
+The actual page content should be placed inside the `Skeleton` component:
+
+```tsx
+<Skeleton
+    name="admin-access-control"
+    loading={showSkeleton}
+    fixture={
+        // fixture
+    }
+>
+    {/* Page content */}
+</Skeleton>
+```
+
+---
+
+### 4. Start the Development Server
+
+The application must be running and the target page must be accessible before generating skeletons.
+
+From the workspace root:
+
+```bash
+pnpm run dev
+```
+
+Verify that the target page loads successfully before running the Boneyard build command.
+
+---
+
+### 5. Generate Skeletons
+
+For authenticated pages, provide a valid authentication cookie:
+
+```bash
+pnpm --filter web exec boneyard-js build http://192.168.1.115:3000 --cookie "access_token=YOUR_NEW_TOKEN"
+```
+
+Replace `YOUR_NEW_TOKEN` with a valid access token.
+
+> **Important:** Never commit real access tokens, authentication cookies, or other credentials to the repository.
+
+---
+
+### 6. Verify Generated Skeletons
+
+After the Boneyard build command completes successfully, check the frontend `src/bones/` directory.
+
+The generated files should appear similar to:
+
+```text
+apps/web/src/
+│
+├── app/
+│
+├── bones/
+│   ├── admin-access-control...
+│   ├── admin-dashboard...
+│   └── registry.ts
+│
+├── components/
+├── config/
+└── ...
+```
+
+Each generated skeleton should have a corresponding file inside `src/bones/`.
+
+For example, when the component uses:
+
+```tsx
+<Skeleton
+    name="admin-access-control"
+    loading={showSkeleton}
+>
+    {/* Page content */}
+</Skeleton>
+```
+
+a corresponding generated skeleton for `admin-access-control` should appear inside:
+
+```text
+src/bones/
+```
+
+Also verify that:
+
+```text
+src/bones/registry.ts
+```
+
+exists and contains the generated skeleton registrations.
+
+The registry is loaded by the application through:
+
+```tsx
+import "@/bones/registry";
+```
+
+This allows the `Skeleton` component to find the generated skeleton using its `name`.
+
+Conceptually:
+
+```text
+<Skeleton name="admin-access-control">
+              │
+              ▼
+      "@/bones/registry"
+              │
+              ▼
+     Generated Skeleton
+              │
+              ▼
+src/bones/admin-access-control...
+```
+
+If the expected skeleton file appears in `src/bones/` and is registered through `registry.ts`, the skeleton generation was successful.
+
+The final verification should also be done in the browser:
+
+1. Open the page where the skeleton is used.
+2. Set or trigger the `loading` state to `true`.
+3. Confirm that the generated skeleton is displayed instead of the normal page content.
+4. Set or allow the `loading` state to become `false`.
+5. Confirm that the normal page content is displayed.
+
+For temporary verification, you can force the skeleton to display:
+
+```tsx
+<Skeleton
+    name="admin-access-control"
+    loading={true}
+>
+    {/* Page content */}
+</Skeleton>
+```
+
+After verifying that the generated skeleton displays correctly, restore the actual loading state:
+
+```tsx
+loading={showSkeleton}
+```
+
+or:
+
+```tsx
+loading={isLoading}
+```
+
+---
+
+### 7. Regenerate Skeletons
+
+When significant changes are made to the page layout or loading-state structure, regenerate the skeletons:
+
+```bash
+pnpm --filter web exec boneyard-js build http://192.168.1.115:3000 --cookie "access_token=YOUR_NEW_TOKEN"
+```
+
+After regeneration, verify that the corresponding files under `src/bones/` have been updated.
+
+### Workflow
+
+```text
+Install Boneyard.js
+        ↓
+Install Playwright + Chromium
+        ↓
+Import Skeleton + bones registry
+        ↓
+Wrap page content with <Skeleton>
+        ↓
+Configure name, loading state, and fixture
+        ↓
+Start development server
+        ↓
+Run Boneyard build
+        ↓
+Check src/bones/
+        ↓
+Verify generated file + registry.ts
+        ↓
+Trigger loading state in browser
+        ↓
+Confirm generated skeleton is displayed
+```
+
+## Modal Management with `useDisclosure`
+
+Use the reusable `useDisclosure` hook to manage modal open and close states.
+
+This keeps modal state management consistent and avoids creating separate boolean state variables for every modal.
+
+### Basic Usage
+
+Create a disclosure instance for each modal:
+
+```tsx
+const userModal = useDisclosure();
+const roleModal = useDisclosure();
+```
+
+Each modal receives its own disclosure instance and can therefore be controlled independently.
+
+Conceptually:
+
+```text
+useDisclosure()
+     │
+     ├── isOpen
+     ├── open()
+     └── close()
+```
+
+Example:
+
+```tsx
+const userModal = useDisclosure();
+
+userModal.open();
+userModal.close();
+
+console.log(userModal.isOpen);
+```
+
+---
+
+### Using `useDisclosure` with Modal
+
+Pass the disclosure state and close handler to the reusable `Modal` component:
+
+```tsx
+<Modal
+    isOpen={userModal.isOpen}
+    onClose={handleCloseUserModal}
+    title={
+        selectedUser
+            ? "Edit User"
+            : "Create User"
+    }
+    size="md"
+    footer={
+        <>
+            <Button
+                type="button"
+                onClick={() => {
+                    userModal.close();
+                    setSelectedUser(null);
+                }}
+            >
+                Cancel
+            </Button>
+
+            <Button
+                type="submit"
+                form="user-form"
+                disabled={
+                    pendingCreateUser ||
+                    pendingUpdateUser
+                }
+            >
+                {selectedUser ? "Update" : "Save"}
+            </Button>
+        </>
+    }
+>
+    <UserForm
+        mode={selectedUser ? "edit" : "create"}
+        user={selectedUser}
+        roles={roles}
+        onCreate={handleCreateUser}
+        onUpdate={handleUpdateUser}
+        isSubmitting={
+            pendingCreateUser ||
+            pendingUpdateUser
+        }
+    />
+</Modal>
+```
+
+---
+
+### Opening a Create Modal
+
+When creating a new record, clear the selected record before opening the modal:
+
+```tsx
+function handleOpenCreateUser() {
+    setSelectedUser(null);
+    userModal.open();
+}
+```
+
+Example:
+
+```tsx
+<Button onClick={handleOpenCreateUser}>
+    Create User
+</Button>
+```
+
+The modal will then use create mode:
+
+```tsx
+mode={selectedUser ? "edit" : "create"}
+```
+
+Since `selectedUser` is `null`, the form receives:
+
+```tsx
+mode="create"
+```
+
+---
+
+### Opening an Edit Modal
+
+When editing an existing record, set the selected record before opening the modal:
+
+```tsx
+function handleOpenEditUser(user: User) {
+    setSelectedUser(user);
+    userModal.open();
+}
+```
+
+Example:
+
+```tsx
+<Button onClick={() => handleOpenEditUser(user)}>
+    Edit
+</Button>
+```
+
+The selected user determines that the modal is in edit mode:
+
+```tsx
+title={selectedUser ? "Edit User" : "Create User"}
+```
+
+and:
+
+```tsx
+mode={selectedUser ? "edit" : "create"}
+```
+
+---
+
+### Closing the Modal
+
+When closing an edit/create modal, also clear its associated selected record:
+
+```tsx
+function handleCloseUserModal() {
+    userModal.close();
+    setSelectedUser(null);
+}
+```
+
+Use the same handler for the modal:
+
+```tsx
+<Modal
+    isOpen={userModal.isOpen}
+    onClose={handleCloseUserModal}
+>
+    ...
+</Modal>
+```
+
+The Cancel button should also use the same close handler:
+
+```tsx
+<Button
+    type="button"
+    onClick={handleCloseUserModal}
+>
+    Cancel
+</Button>
+```
+
+This is preferable to duplicating:
+
+```tsx
+onClick={() => {
+    userModal.close();
+    setSelectedUser(null);
+}}
+```
+
+because all modal cleanup remains in one place.
+
+---
+
+### Multiple Modals
+
+Create a separate disclosure instance for each independent modal:
+
+```tsx
+const userModal = useDisclosure();
+const roleModal = useDisclosure();
+```
+
+For example:
+
+```tsx
+<Button onClick={userModal.open}>
+    Create User
+</Button>
+
+<Button onClick={roleModal.open}>
+    Create Role
+</Button>
+```
+
+Then connect each instance to its corresponding modal:
+
+```tsx
+<Modal
+    isOpen={userModal.isOpen}
+    onClose={userModal.close}
+    title="User"
+>
+    ...
+</Modal>
+
+<Modal
+    isOpen={roleModal.isOpen}
+    onClose={roleModal.close}
+    title="Role"
+>
+    ...
+</Modal>
+```
+
+Each modal maintains independent open/close state.
+
+---
+
+### Recommended Pattern
+
+For CRUD modals that support both create and edit operations:
+
+```tsx
+const userModal = useDisclosure();
+const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+function handleOpenCreateUser() {
+    setSelectedUser(null);
+    userModal.open();
+}
+
+function handleOpenEditUser(user: User) {
+    setSelectedUser(user);
+    userModal.open();
+}
+
+function handleCloseUserModal() {
+    userModal.close();
+    setSelectedUser(null);
+}
+```
+
+The state responsibilities are separated as follows:
+
+```text
+userModal
+    │
+    └── Controls whether the modal is open
+
+selectedUser
+    │
+    ├── null
+    │    └── Create mode
+    │
+    └── User
+         └── Edit mode
+```
+
+This allows the same modal and form to support both create and edit operations:
+
+```text
+Create User
+     │
+     ├── selectedUser = null
+     └── userModal.open()
+              │
+              ▼
+         Create Mode
+
+
+Edit User
+     │
+     ├── selectedUser = user
+     └── userModal.open()
+              │
+              ▼
+          Edit Mode
+
+
+Close Modal
+     │
+     ├── userModal.close()
+     └── selectedUser = null
+```
+
+### Guideline
+
+Prefer:
+
+```tsx
+const userModal = useDisclosure();
+const roleModal = useDisclosure();
+```
+
+instead of managing individual modal booleans:
+
+```tsx
+const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
+```
+
+Use `useDisclosure` for reusable open/close UI state such as:
+
+- Modals
+- Dialogs
+- Drawers
+- Side panels
+- Other toggleable overlays
+
+Keep record-specific state such as `selectedUser` separate from the disclosure state.
+
 
 # Monorepo Architecture
 

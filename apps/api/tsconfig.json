@@ -11,12 +11,19 @@
     },
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": ".",
     "target": "ES2020",
-    "strict": true
+    "strict": true,
+    "noEmit": false,
   },
   "include": [
     "src",
-    "factory",
+    "generated"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
     "prisma.config.ts"
   ]
 }
