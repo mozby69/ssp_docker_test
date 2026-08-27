@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/database/prisma";
+import { FindAllUsersParams } from "../access-control/access-control.types";
+import { Prisma } from "../../../../generated/prisma/client";
+import { PensionerSchema, type TransactionSchema} from "@repo/shared";
+
 
 export async function getDashboardCounts() {
     const [
@@ -27,3 +31,327 @@ export async function getDashboardCounts() {
         totalPermissions,
     };
 }
+
+
+
+
+export async function addPensioner(data: {
+    firstname: string;
+    lastname: string;
+    age: number;
+    loan_amount:number;
+    loan_type:string;
+
+}) {
+    return prisma.$transaction(async (tx) => {
+        const pensioner = await tx.pensionerData.create({
+            data: {
+                firstname: data.firstname,
+                lastname: data.lastname,
+                age: data.age,
+                loan_amount: data.loan_amount,
+                loan_type: data.loan_type,
+            },
+        });
+
+     
+
+        return pensioner;
+    });
+}
+
+
+
+
+
+
+
+export async function displayPensioner(params: FindAllUsersParams) {
+    const {
+        page = 1,
+        limit = 10,
+        search,
+        role,
+        status,
+        sort,
+    } = params;
+
+    const where: Prisma.PensionerDataWhereInput = {};
+
+    if (search?.trim()) {
+        where.OR = [
+            {
+                firstname: {
+                    contains: search,
+                    mode: "insensitive",
+                },
+            },
+            {
+                lastname: {
+                    contains: search,
+                    mode: "insensitive",
+                },
+            },
+        ];
+    }
+
+
+    const [pensioner, total] =
+        await prisma.$transaction([
+            prisma.pensionerData.findMany({
+                where,
+                select: {
+                    id: true,
+                    firstname: true,
+                    lastname: true,
+                    age: true,
+                    loan_amount: true,
+                    loan_type:true,
+                },
+
+                skip: (page - 1) * limit,
+                take: limit,
+              //  orderBy,
+            }),
+
+            prisma.pensionerData.count({
+                where,
+            }),
+        ]);
+
+    return {
+        data: pensioner,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(
+                total / limit
+            ),
+        },
+    };
+}
+
+
+
+
+
+
+
+
+export async function addTransaction(data: {
+    pensioner_id: number;
+    term: number;
+    loan_amount:number;
+    processing_fee:number;
+
+}) {
+    return prisma.$transaction(async (tx) => {
+        const transac = await tx.transactionData.create({
+            data: {
+                term: data.term,
+                loan_amount: data.loan_amount,
+                processing_fee: data.processing_fee,
+
+                pensioner:{
+                    connect:{
+                        id: data.pensioner_id,
+                    }
+                }
+            },
+        });
+
+     
+
+        return transac;
+    });
+}
+
+
+export async function searchPensioner(search:string){
+      const pensionerId = Number(search);
+      return prisma.pensionerData.findMany({
+    where: search
+      ? {
+          OR: [
+            ...(Number.isInteger(pensionerId)
+              ? [
+                  {
+                    id: pensionerId,
+                  },
+                ]
+              : []),
+
+            {
+              firstname: {
+                contains: search,
+                mode: "insensitive",
+              },
+            },
+
+            {
+              lastname: {
+                contains: search,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }
+      : undefined,
+
+    select: {
+      id: true,
+      firstname: true,
+      lastname: true,
+      age: true,
+    },
+
+    orderBy: {
+      lastname: "asc",
+    },
+
+    take: 20,
+  });
+}
+
+
+
+
+
+export async function editPensioner(id:number,data:PensionerSchema) {
+    return prisma.$transaction(async (tx) => {
+        const pensioner = await tx.pensionerData.update({
+            where: {
+                id: id
+            },
+            data:{
+                firstname: data.firstname,
+                lastname: data.lastname,
+                age: data.age,
+                loan_amount: data.loan_amount,
+                loan_type: data.loan_type,
+            }
+        });
+
+     
+
+        return pensioner;
+    });
+}
+
+export async function deletePensioner(id: number) {
+  return prisma.pensionerData.delete({
+    where: {
+      id,
+    },
+  });
+}
+
+
+
+
+export async function displayTransaction(params: FindAllUsersParams) {
+    const {
+        page = 1,
+        limit = 10,
+        search,
+        role,
+        status,
+        sort,
+    } = params;
+
+    const where: Prisma.TransactionDataWhereInput = {};
+
+    if (search?.trim()) {
+        where.OR = [
+            {
+                pensioner:{
+                    firstname: {
+                    contains: search,
+                    mode: "insensitive",
+                },
+                }
+                
+            },
+            {
+                   pensioner:{
+                    lastname: {
+                    contains: search,
+                    mode: "insensitive",
+                },
+                }
+            },
+        ];
+    }
+
+
+    const [res, total] =
+        await prisma.$transaction([
+            prisma.transactionData.findMany({
+                where,
+                select: {
+                    id: true,
+                    term: true,
+                    loan_amount: true,
+                    processing_fee:true,
+                    pensioner_id: true,
+                    pensioner:{
+                        select:{
+                            firstname:true,
+                            lastname:true,
+                        }
+                    }
+                },
+
+                skip: (page - 1) * limit,
+                take: limit,
+          
+            }),
+
+            prisma.transactionData.count({
+                where,
+            }),
+        ]);
+
+    return {
+        data: res,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(
+                total / limit
+            ),
+        },
+    };
+}
+
+
+
+export async function editTransaction(id:number,data:TransactionSchema) {
+    return prisma.$transaction(async (tx) => {
+        const transac_data = await tx.transactionData.update({
+            where: {
+                id: id
+            },
+            data:{
+                term: data.term,
+                loan_amount: data.loan_amount,
+                processing_fee: data.processing_fee,
+            }
+        });
+
+        return transac_data;
+    });
+}
+
+
+
+export async function deleteTranction(id: number) {
+  return prisma.transactionData.delete({
+    where: {
+      id,
+    },
+  });
+}
+

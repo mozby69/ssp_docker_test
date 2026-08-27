@@ -55,7 +55,7 @@ export function TableHeader({
                 </div>
             )}
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-8">
                 {limit !== undefined && onLimitChange && (
                     <div className="flex items-center text-sm text-gray-600">
                         <span className="mr-2">
@@ -71,9 +71,9 @@ export function TableHeader({
                             disabled={disabled}
                         />
 
-                        <span className="ml-2">
+                        {/* <span className="ml-2">
                             Entries
-                        </span>
+                        </span> */}
                     </div>
                 )}
 

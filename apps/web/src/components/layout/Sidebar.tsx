@@ -36,7 +36,7 @@ export default function Sidebar() {
 
     return (
         <aside className="w-64 border-r bg-gray-500" >
-            <div className="p-4 font-bold text-lg" >
+            <div className="p-4 font-bold text-lg text-center" >
                 Workspace
             </div>
 

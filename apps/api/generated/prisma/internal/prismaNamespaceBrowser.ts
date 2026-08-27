@@ -55,7 +55,9 @@ export const ModelName = {
   Role: 'Role',
   UserRole: 'UserRole',
   Permission: 'Permission',
-  RolePermission: 'RolePermission'
+  RolePermission: 'RolePermission',
+  PensionerData: 'PensionerData',
+  TransactionData: 'TransactionData'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -126,6 +128,29 @@ export const RolePermissionScalarFieldEnum = {
 } as const
 
 export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnum)[keyof typeof RolePermissionScalarFieldEnum]
+
+
+export const PensionerDataScalarFieldEnum = {
+  id: 'id',
+  firstname: 'firstname',
+  lastname: 'lastname',
+  age: 'age',
+  loan_amount: 'loan_amount',
+  loan_type: 'loan_type'
+} as const
+
+export type PensionerDataScalarFieldEnum = (typeof PensionerDataScalarFieldEnum)[keyof typeof PensionerDataScalarFieldEnum]
+
+
+export const TransactionDataScalarFieldEnum = {
+  id: 'id',
+  term: 'term',
+  loan_amount: 'loan_amount',
+  processing_fee: 'processing_fee',
+  pensioner_id: 'pensioner_id'
+} as const
+
+export type TransactionDataScalarFieldEnum = (typeof TransactionDataScalarFieldEnum)[keyof typeof TransactionDataScalarFieldEnum]
 
 
 export const SortOrder = {

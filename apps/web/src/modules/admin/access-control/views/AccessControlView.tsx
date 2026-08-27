@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { AccessControlContent } from "./AccessControlContent";
 import { Skeleton } from "boneyard-js/react";
@@ -37,7 +37,7 @@ export default function AccessControlView() {
     const { mutateAsync: createRole, isPending: pendingCreateRole } = useCreateRole();
     const { mutateAsync: updateRole, isPending: pendingUpdateRole } = useUpdateRole();
 
-    const { mutateAsync: updatePermissions, isPending: pendingUpdatePermission } = useUpdateRolePermissions();
+    const { mutateAsync: updatePermissions } = useUpdateRolePermissions();
 
     const rolesQuery = useRoles();
     const permissionsQuery = usePermissions();
@@ -107,7 +107,7 @@ export default function AccessControlView() {
         } catch (error) {
             SweetAlert.errorAlert(
                 "Failed",
-                "Failed to created role."
+                   `Failed to update role.${error}`
             );
         }
 
@@ -127,7 +127,7 @@ export default function AccessControlView() {
         } catch (error) {
             SweetAlert.errorAlert(
                 "Failed",
-                "Failed to update role."
+                `Failed to update role.${error}`
             );
         }
     }
@@ -178,7 +178,7 @@ export default function AccessControlView() {
         } catch (error) {
             SweetAlert.errorAlert(
                 "Failed",
-                "Failed to create user."
+                 `Failed to update role.${error}`
             );
         }
     }
@@ -198,7 +198,7 @@ export default function AccessControlView() {
         } catch (error) {
             SweetAlert.errorAlert(
                 "Failed",
-                "Failed to update user."
+                  `Failed to update role.${error}`
             );
         }
     }
@@ -218,28 +218,15 @@ export default function AccessControlView() {
         rolesQuery.isLoading ||
         permissionsQuery.isLoading;
 
-    // Development only: keep skeleton visible longer
-    const [showSkeleton, setShowSkeleton] = useState(true);
 
-    useEffect(() => {
-        if (isLoading) {
-            setShowSkeleton(true);
-            return;
-        }
 
-        const timer = setTimeout(() => {
-            setShowSkeleton(false);
-        }, 3000);
 
-        return () => clearTimeout(timer);
-    }, [isLoading]);
 
     return (
         <>
             <Skeleton
                 name="admin-access-control"
-                loading={showSkeleton}
-                // loading={isLoading}
+                loading={isLoading}
                 fixture={
                     <AccessControlContent
                         users={accessControlFixture.users}

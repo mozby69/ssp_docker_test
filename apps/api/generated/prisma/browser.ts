@@ -42,3 +42,13 @@ export type Permission = Prisma.PermissionModel
  * 
  */
 export type RolePermission = Prisma.RolePermissionModel
+/**
+ * Model PensionerData
+ * 
+ */
+export type PensionerData = Prisma.PensionerDataModel
+/**
+ * Model TransactionData
+ * 
+ */
+export type TransactionData = Prisma.TransactionDataModel

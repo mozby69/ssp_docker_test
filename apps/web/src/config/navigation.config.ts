@@ -3,7 +3,8 @@ import {
     Users,
     Truck,
     ClipboardList,
-    Settings
+    Settings,
+    FileArchive
 } from "lucide-react";
 
 import { NavigationItem } from "@/types/navigation.types";
@@ -33,5 +34,17 @@ export const navigation: NavigationItem[] = [
         href: ROUTES.UNAUTHORIZED, // temporary
         icon: Settings,
         roles: ["SUPER_ADMIN"],
+    },
+    {
+        title: "Add Transaction",
+        href: ROUTES.BRANCH.TRANSACTION, // temporary
+        icon: Settings,
+        roles: ["BRANCH"],
+    },
+     {
+        title: "Add Pensioner",
+        href: ROUTES.BRANCH.DASHBOARD, // temporary
+        icon: FileArchive,
+        roles: ["BRANCH"],
     },
 ];

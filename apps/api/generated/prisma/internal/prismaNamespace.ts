@@ -401,7 +401,9 @@ export const ModelName = {
   Role: 'Role',
   UserRole: 'UserRole',
   Permission: 'Permission',
-  RolePermission: 'RolePermission'
+  RolePermission: 'RolePermission',
+  PensionerData: 'PensionerData',
+  TransactionData: 'TransactionData'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission"
+    modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "pensionerData" | "transactionData"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +793,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PensionerData: {
+      payload: Prisma.$PensionerDataPayload<ExtArgs>
+      fields: Prisma.PensionerDataFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PensionerDataFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PensionerDataFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>
+        }
+        findFirst: {
+          args: Prisma.PensionerDataFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PensionerDataFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>
+        }
+        findMany: {
+          args: Prisma.PensionerDataFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>[]
+        }
+        create: {
+          args: Prisma.PensionerDataCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>
+        }
+        createMany: {
+          args: Prisma.PensionerDataCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PensionerDataCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>[]
+        }
+        delete: {
+          args: Prisma.PensionerDataDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>
+        }
+        update: {
+          args: Prisma.PensionerDataUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>
+        }
+        deleteMany: {
+          args: Prisma.PensionerDataDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PensionerDataUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PensionerDataUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>[]
+        }
+        upsert: {
+          args: Prisma.PensionerDataUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PensionerDataPayload>
+        }
+        aggregate: {
+          args: Prisma.PensionerDataAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePensionerData>
+        }
+        groupBy: {
+          args: Prisma.PensionerDataGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PensionerDataGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PensionerDataCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PensionerDataCountAggregateOutputType> | number
+        }
+      }
+    }
+    TransactionData: {
+      payload: Prisma.$TransactionDataPayload<ExtArgs>
+      fields: Prisma.TransactionDataFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TransactionDataFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TransactionDataFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>
+        }
+        findFirst: {
+          args: Prisma.TransactionDataFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TransactionDataFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>
+        }
+        findMany: {
+          args: Prisma.TransactionDataFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>[]
+        }
+        create: {
+          args: Prisma.TransactionDataCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>
+        }
+        createMany: {
+          args: Prisma.TransactionDataCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TransactionDataCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>[]
+        }
+        delete: {
+          args: Prisma.TransactionDataDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>
+        }
+        update: {
+          args: Prisma.TransactionDataUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>
+        }
+        deleteMany: {
+          args: Prisma.TransactionDataDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TransactionDataUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TransactionDataUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>[]
+        }
+        upsert: {
+          args: Prisma.TransactionDataUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransactionDataPayload>
+        }
+        aggregate: {
+          args: Prisma.TransactionDataAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTransactionData>
+        }
+        groupBy: {
+          args: Prisma.TransactionDataGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransactionDataGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TransactionDataCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransactionDataCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -884,6 +1034,29 @@ export const RolePermissionScalarFieldEnum = {
 export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnum)[keyof typeof RolePermissionScalarFieldEnum]
 
 
+export const PensionerDataScalarFieldEnum = {
+  id: 'id',
+  firstname: 'firstname',
+  lastname: 'lastname',
+  age: 'age',
+  loan_amount: 'loan_amount',
+  loan_type: 'loan_type'
+} as const
+
+export type PensionerDataScalarFieldEnum = (typeof PensionerDataScalarFieldEnum)[keyof typeof PensionerDataScalarFieldEnum]
+
+
+export const TransactionDataScalarFieldEnum = {
+  id: 'id',
+  term: 'term',
+  loan_amount: 'loan_amount',
+  processing_fee: 'processing_fee',
+  pensioner_id: 'pensioner_id'
+} as const
+
+export type TransactionDataScalarFieldEnum = (typeof TransactionDataScalarFieldEnum)[keyof typeof TransactionDataScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -960,6 +1133,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -1132,6 +1319,8 @@ export type GlobalOmitConfig = {
   userRole?: Prisma.UserRoleOmit
   permission?: Prisma.PermissionOmit
   rolePermission?: Prisma.RolePermissionOmit
+  pensionerData?: Prisma.PensionerDataOmit
+  transactionData?: Prisma.TransactionDataOmit
 }
 
 /* Types for Logging */

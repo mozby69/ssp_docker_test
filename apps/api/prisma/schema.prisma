@@ -82,3 +82,30 @@ model RolePermission {
 }
 
 
+
+
+model PensionerData{
+  id Int @id @default(autoincrement())
+  firstname String? @db.VarChar(100)
+  lastname String? @db.VarChar(100)
+  age Int?
+  loan_amount Decimal? @db.Decimal(10,2)
+  loan_type String? @db.VarChar(200)
+
+  transactionData TransactionData[]
+
+  @@map("pensioner_data")
+}
+
+model TransactionData{
+  id Int @id @default(autoincrement())
+  term Int
+  loan_amount Int
+  processing_fee Int
+
+  pensioner_id Int
+
+  pensioner PensionerData @relation(fields: [pensioner_id], references: [id], onDelete: Cascade)
+
+  @@map("transaction_data")
+}

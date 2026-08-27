@@ -28,7 +28,7 @@ import type {
    USERS
 ===================== */
 
-type GetUsersParams = {
+export type GetUsersParams = {
     page?: number;
     limit?: number;
     search?: string;

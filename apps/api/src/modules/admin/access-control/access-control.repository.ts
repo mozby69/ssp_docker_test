@@ -1,14 +1,8 @@
 import { prisma } from "@/lib/database/prisma";
 import { Prisma } from "../../../../generated/prisma/client";
+import { FindAllUsersParams } from "./access-control.types";
 
-type FindAllUsersParams = {
-    page?: number;
-    limit?: number;
-    search?: string;
-    role?: string;
-    status?: string;
-    sort?: string;
-};
+
 
 export async function findAllUsers(
     params: FindAllUsersParams

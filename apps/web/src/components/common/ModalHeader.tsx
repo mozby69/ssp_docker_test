@@ -104,7 +104,7 @@ export default function Modal({
                     ">
                         <h2
                             id="modal-title"
-                            className="text-lg font-semibold text-black"
+                            className="text-lg font-semibold text-slate-700 uppercase"
                         >
                             {title}
                         </h2>

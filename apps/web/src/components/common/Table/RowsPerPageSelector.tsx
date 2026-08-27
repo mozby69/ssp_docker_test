@@ -9,7 +9,7 @@ type RowsPerPageSelectorProps = {
 export function RowsPerPageSelector({
     rowsPerPage,
     setRowsPerPage,
-    options = [10, 25, 50, 100],
+    options = [5,10, 25, 50, 100],
     disabled = false,
 }: RowsPerPageSelectorProps) {
     return (

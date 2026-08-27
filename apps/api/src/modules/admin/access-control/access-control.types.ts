@@ -30,3 +30,14 @@ export type UpdateRoleInput = {
 export type UpdateRolePermissionsInput = {
     permissionIds: number[];
 };
+
+
+
+export type FindAllUsersParams = {
+    page?: number;
+    limit?: number;
+    search?: string;
+    role?: string;
+    status?: string;
+    sort?: string;
+};
