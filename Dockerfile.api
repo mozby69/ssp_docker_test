@@ -34,3 +34,5 @@ COPY --from=builder --chown=api:nodejs /app/apps/api/prisma ./prisma
 USER api
 EXPOSE 5000
 CMD ["node", "dist/server.mjs"]
+
+
