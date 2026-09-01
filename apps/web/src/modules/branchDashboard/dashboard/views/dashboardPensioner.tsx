@@ -142,10 +142,14 @@ export default function DashboardPesionerView() {
         <div className="p-4">
         
 
-            <div>
+            <div className="flex justify-between">
                 <button 
                 className="bg-green-700 hover:bg-green-500 text-white px-8 py-2.5 rounded"
                 type="button" onClick={openModal}>Add Pensioner</button>
+
+                <div>
+                    <h2 className="text-red-800 font-bold text-2xl shadow">1.0.1</h2>
+                </div>
             </div>
  
   
