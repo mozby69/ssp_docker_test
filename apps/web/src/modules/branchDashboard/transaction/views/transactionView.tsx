@@ -138,11 +138,15 @@ export default function TransactionView(){
         <div className="p-4">
 
 
-            <div>
+            <div className="flex justify-between">
                 <button 
                 onClick={openModal}
                 className="bg-green-700 hover:bg-green-500 text-white px-8 py-2.5 rounded"
                 type="button">Add Transaction</button>
+
+                <div className="font-bold text-2xl text-slate-700">
+                    version 1.0.0
+                </div>
             </div>
  
   
