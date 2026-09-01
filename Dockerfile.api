@@ -14,10 +14,16 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --frozen-lockfile --filter api...
 
 FROM dependencies AS builder
+
 COPY apps/api apps/api
 COPY packages/shared packages/shared
-RUN pnpm --filter api generate
+
+# Generate does not connect to this database.
+RUN DATABASE_URL="postgresql://unused:unused@localhost:5432/unused" \
+    pnpm --filter api generate
+
 RUN pnpm --filter api build
+
 RUN pnpm deploy --legacy --filter api --prod /prod/api
 
 FROM node:24-bookworm-slim AS runner
