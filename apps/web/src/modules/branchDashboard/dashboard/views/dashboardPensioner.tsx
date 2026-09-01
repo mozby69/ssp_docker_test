@@ -148,7 +148,7 @@ export default function DashboardPesionerView() {
                 type="button" onClick={openModal}>Add Pensioner</button>
 
                 <div>
-                    <h2 className="text-red-800 font-bold text-2xl shadow">1.0.1</h2>
+                    <h2 className="text-red-800 font-bold text-2xl shadow">1.0.2</h2>
                 </div>
             </div>
  
