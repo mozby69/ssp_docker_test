@@ -34,6 +34,7 @@ RUN groupadd --system --gid 1001 nodejs \
 COPY --from=builder --chown=api:nodejs /prod/api/node_modules ./node_modules
 COPY --from=builder --chown=api:nodejs /app/apps/api/dist ./dist
 COPY --from=builder --chown=api:nodejs /app/apps/api/prisma ./prisma
+COPY --from=builder --chown=api:nodejs /app/apps/api/prisma.config.ts ./prisma.config.ts
 
 USER api
 
