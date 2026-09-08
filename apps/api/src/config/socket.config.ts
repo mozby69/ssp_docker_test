@@ -7,6 +7,7 @@ import { registerSocketHandlers } from "@/socket";
 const allowedOrigins = [
     env.FRONTEND_URL,
     env.FRONTEND_LAN_URL,
+    env.SSH_TESTING,
 ];
 
 export function initializeSocket(server: HttpServer) {

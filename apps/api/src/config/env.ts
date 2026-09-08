@@ -11,6 +11,7 @@ const envSchema = z.object({
 
     FRONTEND_URL: z.string().url(),
     FRONTEND_LAN_URL: z.string().url(),
+    SSH_TESTING: z.string().url(),
 
     NODE_ENV: z
         .enum(["development", "test", "production"])
