@@ -4,6 +4,7 @@ import { env } from "./env";
 const allowedOrigins = [
     env.FRONTEND_URL,
     env.FRONTEND_LAN_URL,
+    env.SSH_TESTING,
 ].filter(Boolean);
 
 export const corsOptions: CorsOptions = {
