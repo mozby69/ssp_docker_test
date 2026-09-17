@@ -26,10 +26,10 @@ export default function AddTransactionModal({
     control,
     handleSubmit,
     reset,
-  } = useForm<TransactionFormValues>({
+  } = useForm<TransactionSchema>({
     resolver: zodResolver(addTransanctionSchema),
     defaultValues: {
-      pensioner_id: 0,
+      pensioner_id: "",
       term: 0,
       loan_amount: 0,
       processing_fee: 0,
@@ -49,7 +49,7 @@ export default function AddTransactionModal({
     }
 
     reset({
-      pensioner_id: 0,
+      pensioner_id: "",
       term: 0,
       loan_amount: 0,
       processing_fee: 0,
