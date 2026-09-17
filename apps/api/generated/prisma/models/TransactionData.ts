@@ -27,35 +27,31 @@ export type AggregateTransactionData = {
 }
 
 export type TransactionDataAvgAggregateOutputType = {
-  id: number | null
   term: number | null
-  loan_amount: number | null
-  processing_fee: number | null
-  pensioner_id: number | null
+  loan_amount: runtime.Decimal | null
+  processing_fee: runtime.Decimal | null
 }
 
 export type TransactionDataSumAggregateOutputType = {
-  id: number | null
   term: number | null
-  loan_amount: number | null
-  processing_fee: number | null
-  pensioner_id: number | null
+  loan_amount: runtime.Decimal | null
+  processing_fee: runtime.Decimal | null
 }
 
 export type TransactionDataMinAggregateOutputType = {
-  id: number | null
+  id: string | null
   term: number | null
-  loan_amount: number | null
-  processing_fee: number | null
-  pensioner_id: number | null
+  loan_amount: runtime.Decimal | null
+  processing_fee: runtime.Decimal | null
+  pensioner_id: string | null
 }
 
 export type TransactionDataMaxAggregateOutputType = {
-  id: number | null
+  id: string | null
   term: number | null
-  loan_amount: number | null
-  processing_fee: number | null
-  pensioner_id: number | null
+  loan_amount: runtime.Decimal | null
+  processing_fee: runtime.Decimal | null
+  pensioner_id: string | null
 }
 
 export type TransactionDataCountAggregateOutputType = {
@@ -69,19 +65,15 @@ export type TransactionDataCountAggregateOutputType = {
 
 
 export type TransactionDataAvgAggregateInputType = {
-  id?: true
   term?: true
   loan_amount?: true
   processing_fee?: true
-  pensioner_id?: true
 }
 
 export type TransactionDataSumAggregateInputType = {
-  id?: true
   term?: true
   loan_amount?: true
   processing_fee?: true
-  pensioner_id?: true
 }
 
 export type TransactionDataMinAggregateInputType = {
@@ -196,11 +188,11 @@ export type TransactionDataGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 export type TransactionDataGroupByOutputType = {
-  id: number
+  id: string
   term: number
-  loan_amount: number
-  processing_fee: number
-  pensioner_id: number
+  loan_amount: runtime.Decimal
+  processing_fee: runtime.Decimal
+  pensioner_id: string
   _count: TransactionDataCountAggregateOutputType | null
   _avg: TransactionDataAvgAggregateOutputType | null
   _sum: TransactionDataSumAggregateOutputType | null
@@ -227,11 +219,11 @@ export type TransactionDataWhereInput = {
   AND?: Prisma.TransactionDataWhereInput | Prisma.TransactionDataWhereInput[]
   OR?: Prisma.TransactionDataWhereInput[]
   NOT?: Prisma.TransactionDataWhereInput | Prisma.TransactionDataWhereInput[]
-  id?: Prisma.IntFilter<"TransactionData"> | number
+  id?: Prisma.UuidFilter<"TransactionData"> | string
   term?: Prisma.IntFilter<"TransactionData"> | number
-  loan_amount?: Prisma.IntFilter<"TransactionData"> | number
-  processing_fee?: Prisma.IntFilter<"TransactionData"> | number
-  pensioner_id?: Prisma.IntFilter<"TransactionData"> | number
+  loan_amount?: Prisma.DecimalFilter<"TransactionData"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFilter<"TransactionData"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pensioner_id?: Prisma.UuidFilter<"TransactionData"> | string
   pensioner?: Prisma.XOR<Prisma.PensionerDataScalarRelationFilter, Prisma.PensionerDataWhereInput>
 }
 
@@ -245,14 +237,14 @@ export type TransactionDataOrderByWithRelationInput = {
 }
 
 export type TransactionDataWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
+  id?: string
   AND?: Prisma.TransactionDataWhereInput | Prisma.TransactionDataWhereInput[]
   OR?: Prisma.TransactionDataWhereInput[]
   NOT?: Prisma.TransactionDataWhereInput | Prisma.TransactionDataWhereInput[]
   term?: Prisma.IntFilter<"TransactionData"> | number
-  loan_amount?: Prisma.IntFilter<"TransactionData"> | number
-  processing_fee?: Prisma.IntFilter<"TransactionData"> | number
-  pensioner_id?: Prisma.IntFilter<"TransactionData"> | number
+  loan_amount?: Prisma.DecimalFilter<"TransactionData"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFilter<"TransactionData"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pensioner_id?: Prisma.UuidFilter<"TransactionData"> | string
   pensioner?: Prisma.XOR<Prisma.PensionerDataScalarRelationFilter, Prisma.PensionerDataWhereInput>
 }, "id">
 
@@ -273,63 +265,66 @@ export type TransactionDataScalarWhereWithAggregatesInput = {
   AND?: Prisma.TransactionDataScalarWhereWithAggregatesInput | Prisma.TransactionDataScalarWhereWithAggregatesInput[]
   OR?: Prisma.TransactionDataScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TransactionDataScalarWhereWithAggregatesInput | Prisma.TransactionDataScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"TransactionData"> | number
+  id?: Prisma.UuidWithAggregatesFilter<"TransactionData"> | string
   term?: Prisma.IntWithAggregatesFilter<"TransactionData"> | number
-  loan_amount?: Prisma.IntWithAggregatesFilter<"TransactionData"> | number
-  processing_fee?: Prisma.IntWithAggregatesFilter<"TransactionData"> | number
-  pensioner_id?: Prisma.IntWithAggregatesFilter<"TransactionData"> | number
+  loan_amount?: Prisma.DecimalWithAggregatesFilter<"TransactionData"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalWithAggregatesFilter<"TransactionData"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pensioner_id?: Prisma.UuidWithAggregatesFilter<"TransactionData"> | string
 }
 
 export type TransactionDataCreateInput = {
+  id?: string
   term: number
-  loan_amount: number
-  processing_fee: number
+  loan_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
   pensioner: Prisma.PensionerDataCreateNestedOneWithoutTransactionDataInput
 }
 
 export type TransactionDataUncheckedCreateInput = {
-  id?: number
+  id?: string
   term: number
-  loan_amount: number
-  processing_fee: number
-  pensioner_id: number
+  loan_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pensioner_id: string
 }
 
 export type TransactionDataUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   term?: Prisma.IntFieldUpdateOperationsInput | number
-  loan_amount?: Prisma.IntFieldUpdateOperationsInput | number
-  processing_fee?: Prisma.IntFieldUpdateOperationsInput | number
+  loan_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pensioner?: Prisma.PensionerDataUpdateOneRequiredWithoutTransactionDataNestedInput
 }
 
 export type TransactionDataUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   term?: Prisma.IntFieldUpdateOperationsInput | number
-  loan_amount?: Prisma.IntFieldUpdateOperationsInput | number
-  processing_fee?: Prisma.IntFieldUpdateOperationsInput | number
-  pensioner_id?: Prisma.IntFieldUpdateOperationsInput | number
+  loan_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pensioner_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TransactionDataCreateManyInput = {
-  id?: number
+  id?: string
   term: number
-  loan_amount: number
-  processing_fee: number
-  pensioner_id: number
+  loan_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pensioner_id: string
 }
 
 export type TransactionDataUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   term?: Prisma.IntFieldUpdateOperationsInput | number
-  loan_amount?: Prisma.IntFieldUpdateOperationsInput | number
-  processing_fee?: Prisma.IntFieldUpdateOperationsInput | number
+  loan_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type TransactionDataUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   term?: Prisma.IntFieldUpdateOperationsInput | number
-  loan_amount?: Prisma.IntFieldUpdateOperationsInput | number
-  processing_fee?: Prisma.IntFieldUpdateOperationsInput | number
-  pensioner_id?: Prisma.IntFieldUpdateOperationsInput | number
+  loan_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pensioner_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type TransactionDataListRelationFilter = {
@@ -351,11 +346,9 @@ export type TransactionDataCountOrderByAggregateInput = {
 }
 
 export type TransactionDataAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   term?: Prisma.SortOrder
   loan_amount?: Prisma.SortOrder
   processing_fee?: Prisma.SortOrder
-  pensioner_id?: Prisma.SortOrder
 }
 
 export type TransactionDataMaxOrderByAggregateInput = {
@@ -375,11 +368,9 @@ export type TransactionDataMinOrderByAggregateInput = {
 }
 
 export type TransactionDataSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   term?: Prisma.SortOrder
   loan_amount?: Prisma.SortOrder
   processing_fee?: Prisma.SortOrder
-  pensioner_id?: Prisma.SortOrder
 }
 
 export type TransactionDataCreateNestedManyWithoutPensionerInput = {
@@ -424,17 +415,26 @@ export type TransactionDataUncheckedUpdateManyWithoutPensionerNestedInput = {
   deleteMany?: Prisma.TransactionDataScalarWhereInput | Prisma.TransactionDataScalarWhereInput[]
 }
 
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type TransactionDataCreateWithoutPensionerInput = {
+  id?: string
   term: number
-  loan_amount: number
-  processing_fee: number
+  loan_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type TransactionDataUncheckedCreateWithoutPensionerInput = {
-  id?: number
+  id?: string
   term: number
-  loan_amount: number
-  processing_fee: number
+  loan_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type TransactionDataCreateOrConnectWithoutPensionerInput = {
@@ -467,38 +467,39 @@ export type TransactionDataScalarWhereInput = {
   AND?: Prisma.TransactionDataScalarWhereInput | Prisma.TransactionDataScalarWhereInput[]
   OR?: Prisma.TransactionDataScalarWhereInput[]
   NOT?: Prisma.TransactionDataScalarWhereInput | Prisma.TransactionDataScalarWhereInput[]
-  id?: Prisma.IntFilter<"TransactionData"> | number
+  id?: Prisma.UuidFilter<"TransactionData"> | string
   term?: Prisma.IntFilter<"TransactionData"> | number
-  loan_amount?: Prisma.IntFilter<"TransactionData"> | number
-  processing_fee?: Prisma.IntFilter<"TransactionData"> | number
-  pensioner_id?: Prisma.IntFilter<"TransactionData"> | number
+  loan_amount?: Prisma.DecimalFilter<"TransactionData"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFilter<"TransactionData"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pensioner_id?: Prisma.UuidFilter<"TransactionData"> | string
 }
 
 export type TransactionDataCreateManyPensionerInput = {
-  id?: number
+  id?: string
   term: number
-  loan_amount: number
-  processing_fee: number
+  loan_amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type TransactionDataUpdateWithoutPensionerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   term?: Prisma.IntFieldUpdateOperationsInput | number
-  loan_amount?: Prisma.IntFieldUpdateOperationsInput | number
-  processing_fee?: Prisma.IntFieldUpdateOperationsInput | number
+  loan_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type TransactionDataUncheckedUpdateWithoutPensionerInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   term?: Prisma.IntFieldUpdateOperationsInput | number
-  loan_amount?: Prisma.IntFieldUpdateOperationsInput | number
-  processing_fee?: Prisma.IntFieldUpdateOperationsInput | number
+  loan_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type TransactionDataUncheckedUpdateManyWithoutPensionerInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   term?: Prisma.IntFieldUpdateOperationsInput | number
-  loan_amount?: Prisma.IntFieldUpdateOperationsInput | number
-  processing_fee?: Prisma.IntFieldUpdateOperationsInput | number
+  loan_amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  processing_fee?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 
@@ -555,11 +556,11 @@ export type $TransactionDataPayload<ExtArgs extends runtime.Types.Extensions.Int
     pensioner: Prisma.$PensionerDataPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
+    id: string
     term: number
-    loan_amount: number
-    processing_fee: number
-    pensioner_id: number
+    loan_amount: runtime.Decimal
+    processing_fee: runtime.Decimal
+    pensioner_id: string
   }, ExtArgs["result"]["transactionData"]>
   composites: {}
 }
@@ -984,11 +985,11 @@ export interface Prisma__TransactionDataClient<T, Null = never, ExtArgs extends 
  * Fields of the TransactionData model
  */
 export interface TransactionDataFieldRefs {
-  readonly id: Prisma.FieldRef<"TransactionData", 'Int'>
+  readonly id: Prisma.FieldRef<"TransactionData", 'String'>
   readonly term: Prisma.FieldRef<"TransactionData", 'Int'>
-  readonly loan_amount: Prisma.FieldRef<"TransactionData", 'Int'>
-  readonly processing_fee: Prisma.FieldRef<"TransactionData", 'Int'>
-  readonly pensioner_id: Prisma.FieldRef<"TransactionData", 'Int'>
+  readonly loan_amount: Prisma.FieldRef<"TransactionData", 'Decimal'>
+  readonly processing_fee: Prisma.FieldRef<"TransactionData", 'Decimal'>
+  readonly pensioner_id: Prisma.FieldRef<"TransactionData", 'String'>
 }
     
 

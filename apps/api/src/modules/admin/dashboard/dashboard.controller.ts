@@ -132,7 +132,7 @@ export async function searchPensionersController(req: Request, res: Response) {
 
 export async function updatePensionerController(req:Request,res:Response){
     try{
-        const data = await dashboardService.updatePensioner(Number(req.params.id), req.body);
+        const data = await dashboardService.updatePensioner(String(req.params.id), req.body);
           console.log('con',data);
           sendSuccess(res, data)
     }
@@ -143,14 +143,14 @@ export async function updatePensionerController(req:Request,res:Response){
 
 export async function deletePensionerController(req:Request, res:Response){
   try{
-     const id = Number(req.params.id);
+     const id = String(req.params.id);
 
-    if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid pensioner ID",
-      });
-    }
+    // if (!Number.isInteger(id) || id <= 0) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Invalid pensioner ID",
+    //   });
+    // }
       const data = await dashboardService.deletePensioner(id);
       sendSuccess(res,data);
   } 
@@ -202,7 +202,7 @@ export async function getTransactionController(req: Request, res: Response, next
 
 export async function updateTransactionController(req:Request,res:Response){
     try{
-        const data = await dashboardService.updateTransactionService(Number(req.params.id), req.body);
+        const data = await dashboardService.updateTransactionService(String(req.params.id), req.body);
           sendSuccess(res, data)
     }
     catch(error){
@@ -214,14 +214,14 @@ export async function updateTransactionController(req:Request,res:Response){
 
 export async function deleteTransactionController(req:Request, res:Response){
   try{
-     const id = Number(req.params.id);
+     const id = String(req.params.id);
 
-    if (!Number.isInteger(id) || id <= 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid pensioner ID",
-      });
-    }
+    // if (!Number.isInteger(id) || id <= 0) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Invalid pensioner ID",
+    //   });
+    // }
       const data = await dashboardService.deleteTransactionService(id);
       sendSuccess(res,data);
   } 

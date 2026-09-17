@@ -75,6 +75,7 @@ Thumbs.db
 # IDE
 # ------------------------
 .idea/
+.vscode
 
 # Optional:
 # .vscode/

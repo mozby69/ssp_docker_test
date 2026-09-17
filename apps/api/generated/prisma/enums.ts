@@ -9,7 +9,20 @@
 * 🟢 You can import this file directly.
 */
 
+export const SyncStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SYNCED: 'SYNCED',
+  FAILED: 'FAILED'
+} as const
+
+export type SyncStatus = (typeof SyncStatus)[keyof typeof SyncStatus]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const SyncAction = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE'
+} as const
+
+export type SyncAction = (typeof SyncAction)[keyof typeof SyncAction]

@@ -57,7 +57,8 @@ export const ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   PensionerData: 'PensionerData',
-  TransactionData: 'TransactionData'
+  TransactionData: 'TransactionData',
+  SyncOutbox: 'SyncOutbox'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -136,7 +137,9 @@ export const PensionerDataScalarFieldEnum = {
   lastname: 'lastname',
   age: 'age',
   loan_amount: 'loan_amount',
-  loan_type: 'loan_type'
+  loan_type: 'loan_type',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PensionerDataScalarFieldEnum = (typeof PensionerDataScalarFieldEnum)[keyof typeof PensionerDataScalarFieldEnum]
@@ -153,12 +156,38 @@ export const TransactionDataScalarFieldEnum = {
 export type TransactionDataScalarFieldEnum = (typeof TransactionDataScalarFieldEnum)[keyof typeof TransactionDataScalarFieldEnum]
 
 
+export const SyncOutboxScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  action: 'action',
+  payload: 'payload',
+  status: 'status',
+  attempts: 'attempts',
+  nextAttemptAt: 'nextAttemptAt',
+  lockedAt: 'lockedAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  syncedAt: 'syncedAt'
+} as const
+
+export type SyncOutboxScalarFieldEnum = (typeof SyncOutboxScalarFieldEnum)[keyof typeof SyncOutboxScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -175,4 +204,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

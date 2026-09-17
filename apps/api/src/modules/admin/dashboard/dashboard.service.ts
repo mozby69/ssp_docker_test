@@ -66,12 +66,12 @@ export async function searchPensionersService(search: string) {
     return searchList;
 }
 
-export async function updatePensioner(id:number, data:PensionerSchema){
+export async function updatePensioner(id:string, data:PensionerSchema){
     const result = await dashboardRepository.editPensioner(id,data);
     return result;
 }
 
-export async function deletePensioner(id:number){
+export async function deletePensioner(id:string){
     const result = await dashboardRepository.deletePensioner(id);
     return result;
 }
@@ -101,7 +101,7 @@ export async function getTransaction(params: GetUsersParams) {
 }
 
 
-export async function updateTransactionService(id:number, data:TransactionSchema){
+export async function updateTransactionService(id:string, data:TransactionSchema){
     const result = await dashboardRepository.editTransaction(id,data);
     return result;
 }
@@ -109,7 +109,7 @@ export async function updateTransactionService(id:number, data:TransactionSchema
 
 
 
-export async function deleteTransactionService(id:number){
+export async function deleteTransactionService(id:string){
     const result = await dashboardRepository.deleteTranction(id);
     return result;
 }

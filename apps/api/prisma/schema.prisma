@@ -81,31 +81,91 @@ model RolePermission {
   @@map("role_permissions")
 }
 
+model PensionerData {
+  id String @id @default(uuid()) @db.Uuid
 
-
-
-model PensionerData{
-  id Int @id @default(autoincrement())
   firstname String? @db.VarChar(100)
-  lastname String? @db.VarChar(100)
-  age Int?
-  loan_amount Decimal? @db.Decimal(10,2)
-  loan_type String? @db.VarChar(200)
+  lastname  String? @db.VarChar(100)
+  age       Int?
+
+  loan_amount Decimal? @db.Decimal(12, 2)
+  loan_type   String?  @db.VarChar(200)
 
   transactionData TransactionData[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("pensioner_data")
 }
 
-model TransactionData{
-  id Int @id @default(autoincrement())
-  term Int
-  loan_amount Int
-  processing_fee Int
+model TransactionData {
+  id String @id @default(uuid()) @db.Uuid
 
-  pensioner_id Int
+  term           Int
+  loan_amount    Decimal @db.Decimal(12, 2)
+  processing_fee Decimal @db.Decimal(12, 2)
 
-  pensioner PensionerData @relation(fields: [pensioner_id], references: [id], onDelete: Cascade)
+  pensioner_id String @db.Uuid
+
+  pensioner PensionerData @relation(fields: [pensioner_id],references: [id],onDelete: Cascade)
 
   @@map("transaction_data")
 }
+
+enum SyncStatus {
+  PENDING
+  PROCESSING
+  SYNCED
+  FAILED
+}
+
+enum SyncAction {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+model SyncOutbox {
+  id String @id @default(uuid()) @db.Uuid
+
+  entityType String @map("entity_type") @db.VarChar(100)
+  entityId   String @map("entity_id") @db.Uuid
+
+  action SyncAction
+
+  payload Json
+
+  status SyncStatus @default(PENDING)
+
+  attempts Int @default(0)
+
+  nextAttemptAt DateTime @default(now()) @map("next_attempt_at")
+
+  lockedAt DateTime? @map("locked_at")
+
+  lastError String? @map("last_error") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  syncedAt DateTime? @map("synced_at")
+
+  @@index([status, nextAttemptAt, createdAt])
+  @@index([entityType, entityId])
+  @@map("sync_outbox")
+}
+
+model SyncInbox {
+  id String @id @default(uuid()) @db.Uuid
+
+  sourceNode String @map("source_node")
+  entityType String @map("entity_type")
+  entityId   String @map("entity_id")
+  action SyncAction
+  processedAt DateTime @default(now()) @map("processed_at")
+
+  @@index([sourceNode])
+  @@map("sync_inbox")
+}
+

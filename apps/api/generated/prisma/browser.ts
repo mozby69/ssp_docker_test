@@ -52,3 +52,8 @@ export type PensionerData = Prisma.PensionerDataModel
  * 
  */
 export type TransactionData = Prisma.TransactionDataModel
+/**
+ * Model SyncOutbox
+ * 
+ */
+export type SyncOutbox = Prisma.SyncOutboxModel

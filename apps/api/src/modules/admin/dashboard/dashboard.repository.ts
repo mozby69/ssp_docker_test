@@ -43,8 +43,10 @@ export async function addPensioner(data: {
     loan_type:string;
 
 }) {
-    return prisma.$transaction(async (tx) => {
-        const pensioner = await tx.pensionerData.create({
+   return prisma.$transaction(async (tx) => {
+
+    const pensioner =
+        await tx.pensionerData.create({
             data: {
                 firstname: data.firstname,
                 lastname: data.lastname,
@@ -54,10 +56,25 @@ export async function addPensioner(data: {
             },
         });
 
-     
+    await tx.syncOutbox.create({
+        data: {
+            entityType: "PENSIONER",
+            entityId: pensioner.id,
+            action: "CREATE",
 
-        return pensioner;
+            payload: {
+                id: pensioner.id,
+                firstname: pensioner.firstname,
+                lastname: pensioner.lastname,
+                age: pensioner.age,
+                loan_amount: pensioner.loan_amount?.toString(),
+                loan_type: pensioner.loan_type,
+            },
+        },
     });
+
+    return pensioner;
+});
 }
 
 
@@ -140,7 +157,7 @@ export async function displayPensioner(params: FindAllUsersParams) {
 
 
 export async function addTransaction(data: {
-    pensioner_id: number;
+    pensioner_id: string;
     term: number;
     loan_amount:number;
     processing_fee:number;
@@ -169,7 +186,7 @@ export async function addTransaction(data: {
 
 
 export async function searchPensioner(search:string){
-      const pensionerId = Number(search);
+      const pensionerId = (search);
       return prisma.pensionerData.findMany({
     where: search
       ? {
@@ -218,7 +235,7 @@ export async function searchPensioner(search:string){
 
 
 
-export async function editPensioner(id:number,data:PensionerSchema) {
+export async function editPensioner(id:string,data:PensionerSchema) {
     return prisma.$transaction(async (tx) => {
         const pensioner = await tx.pensionerData.update({
             where: {
@@ -239,7 +256,7 @@ export async function editPensioner(id:number,data:PensionerSchema) {
     });
 }
 
-export async function deletePensioner(id: number) {
+export async function deletePensioner(id: string) {
   return prisma.pensionerData.delete({
     where: {
       id,
@@ -328,7 +345,7 @@ export async function displayTransaction(params: FindAllUsersParams) {
 
 
 
-export async function editTransaction(id:number,data:TransactionSchema) {
+export async function editTransaction(id:string,data:TransactionSchema) {
     return prisma.$transaction(async (tx) => {
         const transac_data = await tx.transactionData.update({
             where: {
@@ -347,7 +364,7 @@ export async function editTransaction(id:number,data:TransactionSchema) {
 
 
 
-export async function deleteTranction(id: number) {
+export async function deleteTranction(id: string) {
   return prisma.transactionData.delete({
     where: {
       id,

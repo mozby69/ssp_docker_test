@@ -48,7 +48,7 @@ COPY --from=builder --chown=api:nodejs /app/apps/api/dist ./dist
 COPY --from=builder --chown=api:nodejs /app/apps/api/prisma ./prisma
 COPY --from=builder --chown=api:nodejs /app/apps/api/generated ./generated
 COPY --from=builder --chown=api:nodejs /app/apps/api/prisma.config.ts ./prisma.config.ts
-COPY --from=builder --chown=api:nodejs /app/apps/api/src ./src
+# COPY --from=builder --chown=api:nodejs /app/apps/api/src ./src
 
 USER api
 

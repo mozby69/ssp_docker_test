@@ -403,7 +403,8 @@ export const ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   PensionerData: 'PensionerData',
-  TransactionData: 'TransactionData'
+  TransactionData: 'TransactionData',
+  SyncOutbox: 'SyncOutbox'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "pensionerData" | "transactionData"
+    modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "pensionerData" | "transactionData" | "syncOutbox"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -941,6 +942,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SyncOutbox: {
+      payload: Prisma.$SyncOutboxPayload<ExtArgs>
+      fields: Prisma.SyncOutboxFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SyncOutboxFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SyncOutboxFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>
+        }
+        findFirst: {
+          args: Prisma.SyncOutboxFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SyncOutboxFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>
+        }
+        findMany: {
+          args: Prisma.SyncOutboxFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>[]
+        }
+        create: {
+          args: Prisma.SyncOutboxCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>
+        }
+        createMany: {
+          args: Prisma.SyncOutboxCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SyncOutboxCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>[]
+        }
+        delete: {
+          args: Prisma.SyncOutboxDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>
+        }
+        update: {
+          args: Prisma.SyncOutboxUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>
+        }
+        deleteMany: {
+          args: Prisma.SyncOutboxDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SyncOutboxUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SyncOutboxUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>[]
+        }
+        upsert: {
+          args: Prisma.SyncOutboxUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncOutboxPayload>
+        }
+        aggregate: {
+          args: Prisma.SyncOutboxAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSyncOutbox>
+        }
+        groupBy: {
+          args: Prisma.SyncOutboxGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SyncOutboxGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SyncOutboxCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SyncOutboxCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1040,7 +1115,9 @@ export const PensionerDataScalarFieldEnum = {
   lastname: 'lastname',
   age: 'age',
   loan_amount: 'loan_amount',
-  loan_type: 'loan_type'
+  loan_type: 'loan_type',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PensionerDataScalarFieldEnum = (typeof PensionerDataScalarFieldEnum)[keyof typeof PensionerDataScalarFieldEnum]
@@ -1057,12 +1134,38 @@ export const TransactionDataScalarFieldEnum = {
 export type TransactionDataScalarFieldEnum = (typeof TransactionDataScalarFieldEnum)[keyof typeof TransactionDataScalarFieldEnum]
 
 
+export const SyncOutboxScalarFieldEnum = {
+  id: 'id',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  action: 'action',
+  payload: 'payload',
+  status: 'status',
+  attempts: 'attempts',
+  nextAttemptAt: 'nextAttemptAt',
+  lockedAt: 'lockedAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  syncedAt: 'syncedAt'
+} as const
+
+export type SyncOutboxScalarFieldEnum = (typeof SyncOutboxScalarFieldEnum)[keyof typeof SyncOutboxScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1079,6 +1182,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1147,6 +1259,48 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncAction'
+ */
+export type EnumSyncActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncAction'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncAction[]'
+ */
+export type ListEnumSyncActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncAction[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncStatus'
+ */
+export type EnumSyncStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'SyncStatus[]'
+ */
+export type ListEnumSyncStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SyncStatus[]'>
     
 
 
@@ -1321,6 +1475,7 @@ export type GlobalOmitConfig = {
   rolePermission?: Prisma.RolePermissionOmit
   pensionerData?: Prisma.PensionerDataOmit
   transactionData?: Prisma.TransactionDataOmit
+  syncOutbox?: Prisma.SyncOutboxOmit
 }
 
 /* Types for Logging */

@@ -27,33 +27,35 @@ export type AggregatePensionerData = {
 }
 
 export type PensionerDataAvgAggregateOutputType = {
-  id: number | null
   age: number | null
   loan_amount: runtime.Decimal | null
 }
 
 export type PensionerDataSumAggregateOutputType = {
-  id: number | null
   age: number | null
   loan_amount: runtime.Decimal | null
 }
 
 export type PensionerDataMinAggregateOutputType = {
-  id: number | null
+  id: string | null
   firstname: string | null
   lastname: string | null
   age: number | null
   loan_amount: runtime.Decimal | null
   loan_type: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PensionerDataMaxAggregateOutputType = {
-  id: number | null
+  id: string | null
   firstname: string | null
   lastname: string | null
   age: number | null
   loan_amount: runtime.Decimal | null
   loan_type: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PensionerDataCountAggregateOutputType = {
@@ -63,18 +65,18 @@ export type PensionerDataCountAggregateOutputType = {
   age: number
   loan_amount: number
   loan_type: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
 export type PensionerDataAvgAggregateInputType = {
-  id?: true
   age?: true
   loan_amount?: true
 }
 
 export type PensionerDataSumAggregateInputType = {
-  id?: true
   age?: true
   loan_amount?: true
 }
@@ -86,6 +88,8 @@ export type PensionerDataMinAggregateInputType = {
   age?: true
   loan_amount?: true
   loan_type?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PensionerDataMaxAggregateInputType = {
@@ -95,6 +99,8 @@ export type PensionerDataMaxAggregateInputType = {
   age?: true
   loan_amount?: true
   loan_type?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PensionerDataCountAggregateInputType = {
@@ -104,6 +110,8 @@ export type PensionerDataCountAggregateInputType = {
   age?: true
   loan_amount?: true
   loan_type?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -194,12 +202,14 @@ export type PensionerDataGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 export type PensionerDataGroupByOutputType = {
-  id: number
+  id: string
   firstname: string | null
   lastname: string | null
   age: number | null
   loan_amount: runtime.Decimal | null
   loan_type: string | null
+  createdAt: Date
+  updatedAt: Date
   _count: PensionerDataCountAggregateOutputType | null
   _avg: PensionerDataAvgAggregateOutputType | null
   _sum: PensionerDataSumAggregateOutputType | null
@@ -226,12 +236,14 @@ export type PensionerDataWhereInput = {
   AND?: Prisma.PensionerDataWhereInput | Prisma.PensionerDataWhereInput[]
   OR?: Prisma.PensionerDataWhereInput[]
   NOT?: Prisma.PensionerDataWhereInput | Prisma.PensionerDataWhereInput[]
-  id?: Prisma.IntFilter<"PensionerData"> | number
+  id?: Prisma.UuidFilter<"PensionerData"> | string
   firstname?: Prisma.StringNullableFilter<"PensionerData"> | string | null
   lastname?: Prisma.StringNullableFilter<"PensionerData"> | string | null
   age?: Prisma.IntNullableFilter<"PensionerData"> | number | null
   loan_amount?: Prisma.DecimalNullableFilter<"PensionerData"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.StringNullableFilter<"PensionerData"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"PensionerData"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PensionerData"> | Date | string
   transactionData?: Prisma.TransactionDataListRelationFilter
 }
 
@@ -242,11 +254,13 @@ export type PensionerDataOrderByWithRelationInput = {
   age?: Prisma.SortOrderInput | Prisma.SortOrder
   loan_amount?: Prisma.SortOrderInput | Prisma.SortOrder
   loan_type?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   transactionData?: Prisma.TransactionDataOrderByRelationAggregateInput
 }
 
 export type PensionerDataWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
+  id?: string
   AND?: Prisma.PensionerDataWhereInput | Prisma.PensionerDataWhereInput[]
   OR?: Prisma.PensionerDataWhereInput[]
   NOT?: Prisma.PensionerDataWhereInput | Prisma.PensionerDataWhereInput[]
@@ -255,6 +269,8 @@ export type PensionerDataWhereUniqueInput = Prisma.AtLeast<{
   age?: Prisma.IntNullableFilter<"PensionerData"> | number | null
   loan_amount?: Prisma.DecimalNullableFilter<"PensionerData"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.StringNullableFilter<"PensionerData"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"PensionerData"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PensionerData"> | Date | string
   transactionData?: Prisma.TransactionDataListRelationFilter
 }, "id">
 
@@ -265,6 +281,8 @@ export type PensionerDataOrderByWithAggregationInput = {
   age?: Prisma.SortOrderInput | Prisma.SortOrder
   loan_amount?: Prisma.SortOrderInput | Prisma.SortOrder
   loan_type?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.PensionerDataCountOrderByAggregateInput
   _avg?: Prisma.PensionerDataAvgOrderByAggregateInput
   _max?: Prisma.PensionerDataMaxOrderByAggregateInput
@@ -276,76 +294,95 @@ export type PensionerDataScalarWhereWithAggregatesInput = {
   AND?: Prisma.PensionerDataScalarWhereWithAggregatesInput | Prisma.PensionerDataScalarWhereWithAggregatesInput[]
   OR?: Prisma.PensionerDataScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PensionerDataScalarWhereWithAggregatesInput | Prisma.PensionerDataScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"PensionerData"> | number
+  id?: Prisma.UuidWithAggregatesFilter<"PensionerData"> | string
   firstname?: Prisma.StringNullableWithAggregatesFilter<"PensionerData"> | string | null
   lastname?: Prisma.StringNullableWithAggregatesFilter<"PensionerData"> | string | null
   age?: Prisma.IntNullableWithAggregatesFilter<"PensionerData"> | number | null
   loan_amount?: Prisma.DecimalNullableWithAggregatesFilter<"PensionerData"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.StringNullableWithAggregatesFilter<"PensionerData"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"PensionerData"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PensionerData"> | Date | string
 }
 
 export type PensionerDataCreateInput = {
+  id?: string
   firstname?: string | null
   lastname?: string | null
   age?: number | null
   loan_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   transactionData?: Prisma.TransactionDataCreateNestedManyWithoutPensionerInput
 }
 
 export type PensionerDataUncheckedCreateInput = {
-  id?: number
+  id?: string
   firstname?: string | null
   lastname?: string | null
   age?: number | null
   loan_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   transactionData?: Prisma.TransactionDataUncheckedCreateNestedManyWithoutPensionerInput
 }
 
 export type PensionerDataUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   firstname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   loan_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transactionData?: Prisma.TransactionDataUpdateManyWithoutPensionerNestedInput
 }
 
 export type PensionerDataUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   firstname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   loan_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transactionData?: Prisma.TransactionDataUncheckedUpdateManyWithoutPensionerNestedInput
 }
 
 export type PensionerDataCreateManyInput = {
-  id?: number
+  id?: string
   firstname?: string | null
   lastname?: string | null
   age?: number | null
   loan_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PensionerDataUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   firstname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   loan_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PensionerDataUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   firstname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   loan_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PensionerDataCountOrderByAggregateInput = {
@@ -355,10 +392,11 @@ export type PensionerDataCountOrderByAggregateInput = {
   age?: Prisma.SortOrder
   loan_amount?: Prisma.SortOrder
   loan_type?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PensionerDataAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   age?: Prisma.SortOrder
   loan_amount?: Prisma.SortOrder
 }
@@ -370,6 +408,8 @@ export type PensionerDataMaxOrderByAggregateInput = {
   age?: Prisma.SortOrder
   loan_amount?: Prisma.SortOrder
   loan_type?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PensionerDataMinOrderByAggregateInput = {
@@ -379,10 +419,11 @@ export type PensionerDataMinOrderByAggregateInput = {
   age?: Prisma.SortOrder
   loan_amount?: Prisma.SortOrder
   loan_type?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PensionerDataSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
   age?: Prisma.SortOrder
   loan_amount?: Prisma.SortOrder
 }
@@ -423,20 +464,25 @@ export type PensionerDataUpdateOneRequiredWithoutTransactionDataNestedInput = {
 }
 
 export type PensionerDataCreateWithoutTransactionDataInput = {
+  id?: string
   firstname?: string | null
   lastname?: string | null
   age?: number | null
   loan_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PensionerDataUncheckedCreateWithoutTransactionDataInput = {
-  id?: number
+  id?: string
   firstname?: string | null
   lastname?: string | null
   age?: number | null
   loan_amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PensionerDataCreateOrConnectWithoutTransactionDataInput = {
@@ -456,20 +502,25 @@ export type PensionerDataUpdateToOneWithWhereWithoutTransactionDataInput = {
 }
 
 export type PensionerDataUpdateWithoutTransactionDataInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   firstname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   loan_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PensionerDataUncheckedUpdateWithoutTransactionDataInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   firstname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastname?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   loan_amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   loan_type?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -510,6 +561,8 @@ export type PensionerDataSelect<ExtArgs extends runtime.Types.Extensions.Interna
   age?: boolean
   loan_amount?: boolean
   loan_type?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   transactionData?: boolean | Prisma.PensionerData$transactionDataArgs<ExtArgs>
   _count?: boolean | Prisma.PensionerDataCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pensionerData"]>
@@ -521,6 +574,8 @@ export type PensionerDataSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   age?: boolean
   loan_amount?: boolean
   loan_type?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["pensionerData"]>
 
 export type PensionerDataSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -530,6 +585,8 @@ export type PensionerDataSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   age?: boolean
   loan_amount?: boolean
   loan_type?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["pensionerData"]>
 
 export type PensionerDataSelectScalar = {
@@ -539,9 +596,11 @@ export type PensionerDataSelectScalar = {
   age?: boolean
   loan_amount?: boolean
   loan_type?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type PensionerDataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstname" | "lastname" | "age" | "loan_amount" | "loan_type", ExtArgs["result"]["pensionerData"]>
+export type PensionerDataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstname" | "lastname" | "age" | "loan_amount" | "loan_type" | "createdAt" | "updatedAt", ExtArgs["result"]["pensionerData"]>
 export type PensionerDataInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transactionData?: boolean | Prisma.PensionerData$transactionDataArgs<ExtArgs>
   _count?: boolean | Prisma.PensionerDataCountOutputTypeDefaultArgs<ExtArgs>
@@ -555,12 +614,14 @@ export type $PensionerDataPayload<ExtArgs extends runtime.Types.Extensions.Inter
     transactionData: Prisma.$TransactionDataPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
+    id: string
     firstname: string | null
     lastname: string | null
     age: number | null
     loan_amount: runtime.Decimal | null
     loan_type: string | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["pensionerData"]>
   composites: {}
 }
@@ -985,12 +1046,14 @@ export interface Prisma__PensionerDataClient<T, Null = never, ExtArgs extends ru
  * Fields of the PensionerData model
  */
 export interface PensionerDataFieldRefs {
-  readonly id: Prisma.FieldRef<"PensionerData", 'Int'>
+  readonly id: Prisma.FieldRef<"PensionerData", 'String'>
   readonly firstname: Prisma.FieldRef<"PensionerData", 'String'>
   readonly lastname: Prisma.FieldRef<"PensionerData", 'String'>
   readonly age: Prisma.FieldRef<"PensionerData", 'Int'>
   readonly loan_amount: Prisma.FieldRef<"PensionerData", 'Decimal'>
   readonly loan_type: Prisma.FieldRef<"PensionerData", 'String'>
+  readonly createdAt: Prisma.FieldRef<"PensionerData", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"PensionerData", 'DateTime'>
 }
     
 
@@ -1214,7 +1277,7 @@ export type PensionerDataCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
   /**
    * The data needed to create a PensionerData.
    */
-  data?: Prisma.XOR<Prisma.PensionerDataCreateInput, Prisma.PensionerDataUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.PensionerDataCreateInput, Prisma.PensionerDataUncheckedCreateInput>
 }
 
 /**
