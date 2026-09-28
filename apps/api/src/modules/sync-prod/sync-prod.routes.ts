@@ -7,7 +7,7 @@ import { syncAuthenticate } from "@/middleware/sync-auth.middleware";
 
 const router = Router();
 
-router.use(authenticate);
+
 
 
 

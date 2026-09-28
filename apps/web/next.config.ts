@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  allowedDevOrigins: ['192.168.1.132', '192.168.1.251:3000', '191.168.1.251:5000'],
+  allowedDevOrigins: ['192.168.1.132', '192.168.1.251:3000', '191.168.1.251:5000','localhost','localhost:3001'],
 
   // Allows importing TypeScript directly from @repo/shared without rebuilding.
 
