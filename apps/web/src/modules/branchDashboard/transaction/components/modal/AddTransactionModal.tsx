@@ -78,10 +78,8 @@ export default function AddTransactionModal({
 
 
     return(
-        <div>
-
+    <div>
      <form onSubmit={handleSubmit(onSubmit)}  className="space-y-4">
-        
         <div className="grid grid-cols-3 gap-4">
          {isEdit && transacData ? (
           <div>

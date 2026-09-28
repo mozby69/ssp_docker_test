@@ -234,33 +234,80 @@ export async function searchPensioner(search:string){
 
 
 
-
-export async function editPensioner(id:string,data:PensionerSchema) {
-    return prisma.$transaction(async (tx) => {
-        const pensioner = await tx.pensionerData.update({
-            where: {
-                id: id
-            },
-            data:{
-                firstname: data.firstname,
-                lastname: data.lastname,
-                age: data.age,
-                loan_amount: data.loan_amount,
-                loan_type: data.loan_type,
-            }
-        });
-
-     
-
-        return pensioner;
+export async function editPensioner(
+  id: string,
+  data: PensionerSchema
+) {
+  return prisma.$transaction(async (tx) => {
+    const pensioner = await tx.pensionerData.update({
+      where: {
+        id,
+      },
+      data: {
+        firstname: data.firstname,
+        lastname: data.lastname,
+        age: data.age,
+        loan_amount: data.loan_amount,
+        loan_type: data.loan_type,
+      },
     });
+
+    await tx.syncOutbox.create({
+      data: {
+        entityType: "PENSIONER",
+        entityId: pensioner.id,
+        action: "UPDATE",
+
+        payload: {
+          id: pensioner.id,
+          firstname: pensioner.firstname,
+          lastname: pensioner.lastname,
+          age: pensioner.age,
+          loan_amount: pensioner.loan_amount?.toString(),
+          loan_type: pensioner.loan_type,
+        },
+      },
+    });
+
+    return pensioner;
+  });
 }
 
+
+
+
+
 export async function deletePensioner(id: string) {
-  return prisma.pensionerData.delete({
-    where: {
-      id,
-    },
+  return prisma.$transaction(async (tx) => {
+    const pensioner = await tx.pensionerData.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!pensioner) {
+      throw new Error("Pensioner not found");
+    }
+
+    await tx.syncOutbox.create({
+      data: {
+        entityType: "PENSIONER",
+        entityId: pensioner.id,
+        action: "DELETE",
+
+        payload: {
+          id: pensioner.id,
+        },
+      },
+    });
+
+    await tx.pensionerData.delete({
+      where: {
+        id,
+      },
+    });
+
+    return pensioner;
   });
 }
 

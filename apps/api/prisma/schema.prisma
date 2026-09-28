@@ -157,8 +157,7 @@ model SyncOutbox {
 }
 
 model SyncInbox {
-  id String @id @default(uuid()) @db.Uuid
-
+  id String @id @db.Uuid
   sourceNode String @map("source_node")
   entityType String @map("entity_type")
   entityId   String @map("entity_id")

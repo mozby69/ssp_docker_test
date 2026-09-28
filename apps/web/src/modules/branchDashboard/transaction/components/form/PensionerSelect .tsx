@@ -101,7 +101,7 @@ export function PensionerSelect<T extends FieldValues>({
                       `${pensioner.firstname ?? ""} ${pensioner.lastname ?? ""}`.trim();
 
                     const label =
-                      `${pensioner.id} - ${fullName}`;
+                      `${fullName}`;
 
                     return (
                       <button
