@@ -18,9 +18,9 @@ COPY apps/web apps/web
 COPY packages/shared packages/shared
 
 # NEXT_PUBLIC_* variables are embedded into the browser bundle at build time.
-ARG NEXT_PUBLIC_BACKEND_LAN_URL=http://localhost:5000
-ARG NEXT_PUBLIC_API_URL=http://localhost:5000/api
-ARG NEXT_PUBLIC_SOCKET_URL=http://localhost:5000
+ARG NEXT_PUBLIC_BACKEND_LAN_URL=http://localhost:5001
+ARG NEXT_PUBLIC_API_URL=http://localhost:5001/api
+ARG NEXT_PUBLIC_SOCKET_URL=http://localhost:5001
 ENV NEXT_PUBLIC_BACKEND_LAN_URL=$NEXT_PUBLIC_BACKEND_LAN_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_SOCKET_URL=$NEXT_PUBLIC_SOCKET_URL
