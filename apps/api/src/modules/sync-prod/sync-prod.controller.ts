@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { syncBatchSchema, syncOperationSchema } from "@repo/shared";
 import { sendSuccess } from "@/lib/http/response";
-import * as syncService from "./sync.service";
+import * as syncService from "./sync-prod.service";
 
 export async function syncBatchController(
   req: Request,

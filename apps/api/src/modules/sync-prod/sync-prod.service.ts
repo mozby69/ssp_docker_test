@@ -1,9 +1,6 @@
-import type {
-  SyncBatchSchema,
-  SyncOperationSchema,
-} from "@repo/shared";
+import type {SyncBatchSchema,SyncOperationSchema} from "@repo/shared";
 
-import * as syncRepository from "./sync.repository";
+import * as syncRepository from "./sync-prod.repository";
 
 export async function processSyncBatch(
   batch: SyncBatchSchema
