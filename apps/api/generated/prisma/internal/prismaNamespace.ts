@@ -404,7 +404,8 @@ export const ModelName = {
   RolePermission: 'RolePermission',
   PensionerData: 'PensionerData',
   TransactionData: 'TransactionData',
-  SyncOutbox: 'SyncOutbox'
+  SyncOutbox: 'SyncOutbox',
+  SyncInbox: 'SyncInbox'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -420,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "pensionerData" | "transactionData" | "syncOutbox"
+    modelProps: "user" | "role" | "userRole" | "permission" | "rolePermission" | "pensionerData" | "transactionData" | "syncOutbox" | "syncInbox"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1016,6 +1017,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SyncInbox: {
+      payload: Prisma.$SyncInboxPayload<ExtArgs>
+      fields: Prisma.SyncInboxFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SyncInboxFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SyncInboxFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>
+        }
+        findFirst: {
+          args: Prisma.SyncInboxFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SyncInboxFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>
+        }
+        findMany: {
+          args: Prisma.SyncInboxFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>[]
+        }
+        create: {
+          args: Prisma.SyncInboxCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>
+        }
+        createMany: {
+          args: Prisma.SyncInboxCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SyncInboxCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>[]
+        }
+        delete: {
+          args: Prisma.SyncInboxDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>
+        }
+        update: {
+          args: Prisma.SyncInboxUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>
+        }
+        deleteMany: {
+          args: Prisma.SyncInboxDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SyncInboxUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SyncInboxUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>[]
+        }
+        upsert: {
+          args: Prisma.SyncInboxUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncInboxPayload>
+        }
+        aggregate: {
+          args: Prisma.SyncInboxAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSyncInbox>
+        }
+        groupBy: {
+          args: Prisma.SyncInboxGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SyncInboxGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SyncInboxCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SyncInboxCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1151,6 +1226,18 @@ export const SyncOutboxScalarFieldEnum = {
 } as const
 
 export type SyncOutboxScalarFieldEnum = (typeof SyncOutboxScalarFieldEnum)[keyof typeof SyncOutboxScalarFieldEnum]
+
+
+export const SyncInboxScalarFieldEnum = {
+  id: 'id',
+  sourceNode: 'sourceNode',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  action: 'action',
+  processedAt: 'processedAt'
+} as const
+
+export type SyncInboxScalarFieldEnum = (typeof SyncInboxScalarFieldEnum)[keyof typeof SyncInboxScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1476,6 +1563,7 @@ export type GlobalOmitConfig = {
   pensionerData?: Prisma.PensionerDataOmit
   transactionData?: Prisma.TransactionDataOmit
   syncOutbox?: Prisma.SyncOutboxOmit
+  syncInbox?: Prisma.SyncInboxOmit
 }
 
 /* Types for Logging */

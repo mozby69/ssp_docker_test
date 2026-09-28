@@ -58,7 +58,8 @@ export const ModelName = {
   RolePermission: 'RolePermission',
   PensionerData: 'PensionerData',
   TransactionData: 'TransactionData',
-  SyncOutbox: 'SyncOutbox'
+  SyncOutbox: 'SyncOutbox',
+  SyncInbox: 'SyncInbox'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -173,6 +174,18 @@ export const SyncOutboxScalarFieldEnum = {
 } as const
 
 export type SyncOutboxScalarFieldEnum = (typeof SyncOutboxScalarFieldEnum)[keyof typeof SyncOutboxScalarFieldEnum]
+
+
+export const SyncInboxScalarFieldEnum = {
+  id: 'id',
+  sourceNode: 'sourceNode',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  action: 'action',
+  processedAt: 'processedAt'
+} as const
+
+export type SyncInboxScalarFieldEnum = (typeof SyncInboxScalarFieldEnum)[keyof typeof SyncInboxScalarFieldEnum]
 
 
 export const SortOrder = {

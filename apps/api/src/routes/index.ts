@@ -3,6 +3,8 @@ import authRoutes from "../modules/auth/auth.routes";
 import accessControlRoutes from "@/modules/admin/access-control/access-control.routes";
 import dashboardRoutes from "@/modules/admin/dashboard/dashboard.routes";
 import { authenticate } from '@/middleware/authenticate.middleware';
+import syncRoutes from "../modules/sync/sync.routes";
+
 
 const router = Router();
 
@@ -19,5 +21,7 @@ router.use(
     authenticate,
     dashboardRoutes
 );
+
+router.use("/sync",authenticate,syncRoutes);
 
 export default router;

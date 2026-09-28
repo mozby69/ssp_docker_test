@@ -81,3 +81,8 @@ export type TransactionData = Prisma.TransactionDataModel
  * 
  */
 export type SyncOutbox = Prisma.SyncOutboxModel
+/**
+ * Model SyncInbox
+ * 
+ */
+export type SyncInbox = Prisma.SyncInboxModel
