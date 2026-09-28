@@ -10,10 +10,7 @@ type PensionerPayload = {
   loan_type?: string | null;
 };
 
-export async function processPensionerOperation(
-  nodeId: string,
-  operation: SyncOperationSchema
-) {
+export async function processPensionerOperation(nodeId: string,operation: SyncOperationSchema) {
   return prisma.$transaction(async (tx) => {
     const alreadyProcessed =
       await tx.syncInbox.findUnique({
@@ -29,8 +26,7 @@ export async function processPensionerOperation(
       };
     }
 
-    const payload =
-      operation.payload as PensionerPayload;
+    const payload = operation.payload as PensionerPayload;
 
     if (operation.action === "CREATE") {
       await tx.pensionerData.upsert({

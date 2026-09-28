@@ -33,6 +33,44 @@ if (!SYNC_NODE_ID) {
   );
 }
 
+
+class SyncNetworkError extends Error {}
+
+class SyncHttpError extends Error {
+  constructor(
+    public status: number,
+    message: string
+  ) {
+    super(message);
+  }
+}
+
+async function markPending(
+  jobs: Awaited<
+    ReturnType<typeof claimBatch>
+  >
+) {
+  const retryAt = new Date(
+    Date.now() + POLL_INTERVAL
+  );
+
+  await prisma.syncOutbox.updateMany({
+    where: {
+      id: {
+        in: jobs.map((job) => job.id),
+      },
+    },
+
+    data: {
+      status: "PENDING",
+      lockedAt: null,
+      lastError: null,
+      nextAttemptAt: retryAt,
+    },
+  });
+}
+
+
 function sleep(ms: number) {
   return new Promise((resolve) =>
     setTimeout(resolve, ms)
@@ -184,53 +222,64 @@ async function markFailed(
   }
 }
 
-async function sendBatch(jobs: Awaited<ReturnType<typeof claimBatch>>) {
-  const operations = jobs.map(
-    (job) => ({
-      operationId: job.id,
-      entityType: job.entityType,
-      entityId: job.entityId,
-      action: job.action,
-      payload: job.payload,
-    })
-  );
+async function sendBatch(
+  jobs: Awaited<
+    ReturnType<typeof claimBatch>
+  >
+) {
+  const operations = jobs.map((job) => ({
+    operationId: job.id,
+    entityType: job.entityType,
+    entityId: job.entityId,
+    action: job.action,
+    payload: job.payload,
+  }));
 
-  const response = await fetch(
-    `${CENTRAL_API_URL}/api/sync/sync-batch`,
-    {
-      method: "POST",
+  let response: Response;
 
-      headers: {
-        "Content-Type":
-          "application/json",
+  try {
+    response = await fetch(
+      `${CENTRAL_API_URL}/api/sync/sync-batch`,
+      {
+        method: "POST",
 
-        ...(SYNC_TOKEN
-          ? {
-              Authorization:
-                `Bearer ${SYNC_TOKEN}`,
-            }
-          : {}),
-      },
+        headers: {
+          "Content-Type": "application/json",
 
-      body: JSON.stringify({
-        nodeId: SYNC_NODE_ID,
-        operations,
-      }),
-    }
-  );
+          ...(SYNC_TOKEN
+            ? {
+                Authorization:
+                  `Bearer ${SYNC_TOKEN}`,
+              }
+            : {}),
+        },
+
+        body: JSON.stringify({
+          nodeId: SYNC_NODE_ID,
+          operations,
+        }),
+
+        signal: AbortSignal.timeout(10000),
+      }
+    );
+  } catch (error) {
+    throw new SyncNetworkError(
+      error instanceof Error
+        ? error.message
+        : "Network unavailable"
+    );
+  }
 
   if (!response.ok) {
-    const body =
-      await response.text();
+    const body = await response.text();
 
-    throw new Error(
+    throw new SyncHttpError(
+      response.status,
       `Central API returned ${response.status}: ${body}`
     );
   }
 
-  const result = await response.json();
-
-  return result;
+  return response.json();
 }
 
 async function runOnce() {
@@ -254,19 +303,40 @@ async function runOnce() {
     await markSynced(
       jobs.map((job) => job.id)
     );
-  } catch (error) {
-    console.error(
-      "Sync batch failed:",
-      error
+ } catch (error) {
+  if (error instanceof SyncNetworkError) {
+    console.log(
+      "Central API unreachable. Keeping operations PENDING."
     );
 
-    await markFailed(
-      jobs,
-      error
-    );
+    await markPending(jobs);
+
+    return true;
   }
 
-  return true;
+  if (
+    error instanceof SyncHttpError &&
+    [502, 503, 504].includes(error.status)
+  ) {
+    console.log(
+      `Central API temporarily unavailable (${error.status}). Keeping operations PENDING.`
+    );
+
+    await markPending(jobs);
+
+    return true;
+  }
+
+  console.error(
+    "Sync batch failed:",
+    error
+  );
+
+  await markFailed(
+    jobs,
+    error
+  );
+}
 }
 
 async function startWorker() {
