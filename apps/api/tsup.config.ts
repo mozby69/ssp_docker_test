@@ -16,8 +16,8 @@ export default defineConfig({
   entry: {
     server: "src/server.ts",
 
-    "workers/sync-worker":
-      "src/workers/sync-worker.ts",
+    "workers/sync-local-worker":
+      "src/workers/sync-local-worker.ts",
   },
 
   format: ["esm"],
