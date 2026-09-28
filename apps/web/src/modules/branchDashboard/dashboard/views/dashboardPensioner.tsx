@@ -1,5 +1,3 @@
-
-
 "use client"
 
 import Modal from "@/components/common/ModalHeader"
@@ -12,6 +10,8 @@ import { useCreatePensioner ,useDeletePensioner,useEditPensioner,useGetPensioner
 import {  PensionerSchema, UpdatePensionerSchema } from "@repo/shared";
 import { useState } from "react";
 import SweetAlert from "@/lib/alerts/alert";
+
+
 
 
 export default function DashboardPesionerView() {
@@ -157,8 +157,7 @@ export default function DashboardPesionerView() {
         
             <Modal onClose={closeModal} isOpen={userModal.isOpen} title={selectedTransaction ? "edit transaction" : "add transaction"} size="lg">
                 <div>
-                    <BranchModalDashboard onCreate={handleCreatePensioner} onUpdate={handleUpdatePensionerData} mode={selectedTransaction ? "edit" : "add"} pensionerData={selectedTransaction}/>
-       
+                <BranchModalDashboard onCreate={handleCreatePensioner} onUpdate={handleUpdatePensionerData} mode={selectedTransaction ? "edit" : "add"} pensionerData={selectedTransaction}/>
                 </div>
             </Modal>
 
@@ -198,3 +197,6 @@ export default function DashboardPesionerView() {
 
     )
 }
+
+
+
