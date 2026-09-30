@@ -45,8 +45,7 @@ export async function addPensioner(data: {
 }) {
    return prisma.$transaction(async (tx) => {
 
-    const pensioner =
-        await tx.pensionerData.create({
+    const pensioner = await tx.pensionerData.create({
             data: {
                 firstname: data.firstname,
                 lastname: data.lastname,
@@ -165,6 +164,7 @@ export async function addTransaction(data: {
 }) {
     return prisma.$transaction(async (tx) => {
         const transac = await tx.transactionData.create({
+
             data: {
                 term: data.term,
                 loan_amount: data.loan_amount,
@@ -177,6 +177,22 @@ export async function addTransaction(data: {
                 }
             },
         });
+
+    await tx.syncOutbox.create({
+        data: {
+            entityType: "TRANSACTION",
+            entityId: transac.id,
+            action: "CREATE",
+
+            payload: {
+                id: transac.id,
+                term: transac.term,
+                loan_amount: transac.loan_amount,
+                processing_fee: transac.processing_fee,
+                pensioner: transac.pensioner_id,
+            },
+        },
+    });
 
      
 
@@ -405,6 +421,21 @@ export async function editTransaction(id:string,data:TransactionSchema) {
             }
         });
 
+        await tx.syncOutbox.create({
+                data: {
+                    entityType: "TRANSACTION",
+                    entityId: transac_data.id,
+                    action: "UPDATE",
+
+                    payload: {
+                    id: transac_data.id,
+                    term: transac_data.term,
+                    loan_amount: transac_data.loan_amount,
+                    processing_fee: transac_data.processing_fee,
+                    },
+                },
+                });
+
         return transac_data;
     });
 }
@@ -412,10 +443,39 @@ export async function editTransaction(id:string,data:TransactionSchema) {
 
 
 export async function deleteTranction(id: string) {
-  return prisma.transactionData.delete({
-    where: {
-      id,
-    },
+  return prisma.$transaction(async (tx) => {
+
+    const transaction = await tx.transactionData.findUnique({
+        where: {
+          id,
+        },
+      });
+
+    if (!transaction) {
+      throw new Error("Transaction not found");
+    }
+
+
+    await tx.syncOutbox.create({
+      data: {
+        entityType: "TRANSACTION",
+        entityId: transaction.id,
+        action: "DELETE",
+
+        payload: {
+          id: transaction.id,
+        },
+      },
+    });
+
+
+    await tx.transactionData.delete({
+      where: {
+        id,
+      },
+    });
+
+    return transaction;
   });
 }
 
