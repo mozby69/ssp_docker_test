@@ -105,3 +105,112 @@ export async function processPensionerOperation(nodeId: string,operation: SyncOp
     };
   });
 }
+
+
+
+
+
+
+
+
+
+
+type TransactionPayload = {
+  id: string;
+  pensioner_id?: string;
+  term?: number;
+  loan_amount?: string;
+  processing_fee?: string;
+};
+
+export async function processTransactionOperation(nodeId: string,operation: SyncOperationSchema) {
+  return prisma.$transaction(async (tx) => {
+    const alreadyProcessed =
+      await tx.syncInbox.findUnique({
+        where: {
+          id: operation.operationId,
+        },
+      });
+
+    if (alreadyProcessed) {
+      return {
+        operationId: operation.operationId,
+        status: "ALREADY_PROCESSED",
+      };
+    }
+
+    const payload =
+      operation.payload as TransactionPayload;
+
+    if (operation.action === "CREATE") {
+      if (!payload.pensioner_id) {
+        throw new Error(
+          "pensioner_id is required for TRANSACTION CREATE"
+        );
+      }
+
+      await tx.transactionData.upsert({
+        where: {
+          id: operation.entityId,
+        },
+
+        create: {
+          id: operation.entityId,
+          term: payload.term ?? 0,
+          loan_amount:payload.loan_amount ?? "0",
+          processing_fee: payload.processing_fee ?? "0",
+          pensioner: {
+            connect: {
+              id: payload.pensioner_id,
+            },
+          },
+        },
+
+        update: {
+          term: payload.term ?? 0,
+          loan_amount:payload.loan_amount ?? "0",
+          processing_fee:payload.processing_fee ?? "0",
+        },
+      });
+    }
+
+    if (operation.action === "UPDATE") {
+      await tx.transactionData.update({
+        where: {
+          id: operation.entityId,
+        },
+
+        data: {
+          term: payload.term,
+          loan_amount:
+            payload.loan_amount,
+          processing_fee:
+            payload.processing_fee,
+        },
+      });
+    }
+
+    if (operation.action === "DELETE") {
+      await tx.transactionData.delete({
+        where: {
+          id: operation.entityId,
+        },
+      });
+    }
+
+    await tx.syncInbox.create({
+      data: {
+        id: operation.operationId,
+        sourceNode: nodeId,
+        entityType: operation.entityType,
+        entityId: operation.entityId,
+        action: operation.action,
+      },
+    });
+
+    return {
+      operationId: operation.operationId,
+      status: "PROCESSED",
+    };
+  });
+}

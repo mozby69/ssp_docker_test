@@ -5,6 +5,7 @@ export const syncOperationSchema = z.object({
 
   entityType: z.enum([
     "PENSIONER",
+    "TRANSACTION"
   ]),
 
   entityId: z.string().uuid(),
