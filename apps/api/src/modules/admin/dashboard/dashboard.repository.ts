@@ -187,6 +187,7 @@ export async function addTransaction(data: {
             payload: {
                 id: transac.id,
                 term: transac.term,
+                pensioner_id: transac.pensioner_id,
                 loan_amount: transac.loan_amount,
                 processing_fee: transac.processing_fee,
                 pensioner: transac.pensioner_id,

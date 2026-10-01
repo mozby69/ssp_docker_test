@@ -34,6 +34,13 @@ async function processOperation(
     );
   }
 
+   if (operation.entityType === "TRANSACTION") {
+    return syncRepository.processTransactionOperation(
+      nodeId,
+      operation
+    );
+  }
+
   throw new Error(
     `Unsupported entity type: ${operation.entityType}`
   );
